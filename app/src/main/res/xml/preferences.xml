@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <de.linux13524.ytldl.preferences.IntEditTextPreference
+        android:defaultValue="0"
+        android:key="pref_itag"
+        android:maxLength="3"
+        android:numeric="integer"
+        android:title="itag" />
+</PreferenceScreen>
