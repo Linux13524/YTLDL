@@ -12,5 +12,5 @@ class IntEditTextPreference : EditTextPreference {
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {}
 
     override fun getPersistedString(defaultReturnValue: String?) = getPersistedInt(-1).toString()
-    override fun persistString(value: String) = persistInt(Integer.valueOf(value)!!)
+    override fun persistString(value: String) = persistInt(Integer.valueOf(value))
 }
