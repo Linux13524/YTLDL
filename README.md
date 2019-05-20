@@ -4,7 +4,6 @@
 
 ## Dependencies and Tools
 - [YoutubeListDownloader](https://github.com/Linux13524/YoutubeListDownloader) library
-- [Boost](https://boost.org) library
 - [conan](https://conan.io) dependency management
 - [cmake](https://cmake.org) build tool
 
