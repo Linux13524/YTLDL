@@ -1,0 +1,41 @@
+language: cpp
+dist: trusty
+sudo: required
+
+cache:
+  directories:
+    - /home/travis/.conan/
+    - /home/travis/.gradle/
+
+deploy:
+  provider: releases
+  name: YTLDL-$TRAVIS_TAG
+  api_key: $GITHUB_KEY
+  file: "dist/*"
+  skip_cleanup: true
+  file_glob: true
+  on:
+    tags: true
+
+matrix:
+  include:
+    - os: linux
+      language: android
+      env: PLATFORM=android
+      android:
+        components:
+          - build-tools-28.0.3
+          - android-28
+        licenses:
+          - 'android-sdk-license-.+'
+      install:
+        - chmod +x .travis/install.sh
+        - .travis/install.sh
+        - "yes | sdkmanager \"cmake;3.10.2.4988404\""
+      script:
+        - chmod +x .travis/build.sh
+        - .travis/build.sh
+before_deploy:
+  - chmod +x .travis/pack.sh
+  - .travis/pack.sh
+
