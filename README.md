@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/Linux13524/YTLDL.svg?token=Y8CyLpBvCJrzzHazpE4P&branch=master)](https://travis-ci.com/Linux13524/YTLDL)
+
 # YTLDL: Youtube-List-Downloader App for Android
 
 ## [Download Latest Version](https://github.com/Linux13524/YTLDL/releases)
