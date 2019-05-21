@@ -39,7 +39,7 @@ Java_de_linux13524_ytldl_jniwrapper_Channel_getTitle
     return env->NewStringUTF(Channel->GetTitle().c_str());
 }
 
-// loadThumbnail
+// loadVideos
 JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Channel_loadVideos
         (JNIEnv *env, jobject thiz) {
