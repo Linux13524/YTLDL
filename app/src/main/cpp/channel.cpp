@@ -12,7 +12,7 @@ JNIEXPORT jlong JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Channel_00024Companion_getNative
         (JNIEnv *env, jobject thiz, jstring id_, jboolean isUsername) {
 
-    const char *id = env->GetStringUTFChars(id_, 0);
+    const char *id = env->GetStringUTFChars(id_, nullptr);
 
     Youtube::Channel *Channel = new Youtube::Channel(Youtube::Channel::Get(id, isUsername));
 
@@ -24,7 +24,7 @@ JNIEXPORT jstring JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Channel_getId
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Channel *Channel = getHandle<Youtube::Channel>(env, thiz);
+    auto *Channel = getHandle<Youtube::Channel>(env, thiz);
 
     return env->NewStringUTF(Channel->GetId().c_str());
 }
@@ -34,7 +34,7 @@ JNIEXPORT jstring JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Channel_getTitle
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Channel *Channel = getHandle<Youtube::Channel>(env, thiz);
+    auto *Channel = getHandle<Youtube::Channel>(env, thiz);
 
     return env->NewStringUTF(Channel->GetTitle().c_str());
 }
@@ -44,7 +44,7 @@ JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Channel_loadVideos
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Channel *Channel = getHandle<Youtube::Channel>(env, thiz);
+    auto *Channel = getHandle<Youtube::Channel>(env, thiz);
 
     Channel->LoadVideos()->join();
 }
@@ -54,20 +54,20 @@ JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Channel_downloadVideos
         (JNIEnv *env, jobject thiz, jintArray itags_, jobject callbackProgress_, jstring folder_) {
 
-    Youtube::Channel *channel = getHandle<Youtube::Channel>(env, thiz);
-    const char *folder = env->GetStringUTFChars(folder_, 0);
+    auto *channel = getHandle<Youtube::Channel>(env, thiz);
+    const char *folder = env->GetStringUTFChars(folder_, nullptr);
 
     jsize size = env->GetArrayLength(itags_);
     std::vector<int> vItags(size);
 
-    jint *itags = env->GetIntArrayElements(itags_, NULL);
+    jint *itags = env->GetIntArrayElements(itags_, nullptr);
 
     for (int i = 0; i < size; i++) {
         vItags[i] = itags[i];
     }
 
-    jclass lClass = env->FindClass("de/linux13524/ytldl/jniwrapper/Channel$ProgressCallback");
-    jclass gClass = reinterpret_cast<jclass>(env->NewGlobalRef(lClass));
+    auto lClass = env->FindClass("de/linux13524/ytldl/jniwrapper/Channel$ProgressCallback");
+    auto gClass = reinterpret_cast<jclass>(env->NewGlobalRef(lClass));
 
     jobject gCallbackProgress = env->NewGlobalRef(callbackProgress_);
 
