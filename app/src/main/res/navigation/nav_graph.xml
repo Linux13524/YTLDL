@@ -7,7 +7,11 @@
 
     <fragment
         android:id="@+id/addListFragment"
-        android:name="de.linux13524.ytldl.AddListFragment"
-        android:label="fragment_add_list"
+        android:name="de.linux13524.ytldl.fragments.AddListFragment"
+        android:label="Add List"
         tools:layout="@layout/fragment_add_list" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="de.linux13524.ytldl.fragments.SettingsFragment"
+        android:label="Settings" />
 </navigation>

@@ -1,4 +1,4 @@
-package de.linux13524.ytldl
+package de.linux13524.ytldl.fragments
 
 import android.os.Bundle
 import android.os.Environment
@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import de.linux13524.ytldl.R
 import de.linux13524.ytldl.jniwrapper.Channel
 import de.linux13524.ytldl.jniwrapper.Playlist
 import de.linux13524.ytldl.jniwrapper.Video
@@ -24,13 +25,12 @@ class AddListFragment : Fragment() {
 
     private val sdCardDir = "${Environment.getExternalStorageDirectory()}/YT-DL"
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         btn_search.setOnClickListener(::onButtonSearchClick)
         btn_print_formats.setOnClickListener(::onButtonPrintFormatsClick)
         btn_download.setOnClickListener(::onButtonDownloadClick)
-
     }
 
     override fun onCreateView(

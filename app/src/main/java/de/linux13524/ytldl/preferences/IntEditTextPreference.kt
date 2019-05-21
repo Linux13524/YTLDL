@@ -1,8 +1,8 @@
 package de.linux13524.ytldl.preferences
 
 import android.content.Context
-import android.preference.EditTextPreference
 import android.util.AttributeSet
+import androidx.preference.EditTextPreference
 
 
 class IntEditTextPreference : EditTextPreference {
