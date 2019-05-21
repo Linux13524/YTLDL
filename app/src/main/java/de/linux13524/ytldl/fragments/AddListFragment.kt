@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.fragment_add_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class AddListFragment : Fragment() {
@@ -28,9 +29,9 @@ class AddListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btn_search.setOnClickListener(::onButtonSearchClick)
-        btn_print_formats.setOnClickListener(::onButtonPrintFormatsClick)
-        btn_download.setOnClickListener(::onButtonDownloadClick)
+        btn_search.setOnClickListener { onButtonSearchClick() }
+        btn_print_formats.setOnClickListener { onButtonPrintFormatsClick() }
+        btn_download.setOnClickListener { onButtonDownloadClick() }
     }
 
     override fun onCreateView(
@@ -41,7 +42,7 @@ class AddListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_add_list, container, false)
     }
 
-    private fun onButtonSearchClick(v: View?) {
+    private fun onButtonSearchClick() {
         pb_download.progress = 0
         btn_download.isEnabled = false
         btn_print_formats.isEnabled = false
@@ -49,15 +50,15 @@ class AddListFragment : Fragment() {
         listTypedCall({ searchVideo() }, { searchPlaylist() }, { searchChannel(it) })
     }
 
-    private fun onButtonPrintFormatsClick(v: View?) {
+    private fun onButtonPrintFormatsClick() {
         currentVideo?.printFormats()
     }
 
-    private fun onButtonDownloadClick(v: View?) {
+    private fun onButtonDownloadClick() {
         pb_download.progress = 0
         btn_download.isEnabled = false
 
-        listTypedCall({ downloadVideo() }, { downloadPlaylist() }, { downloadChannel(it) })
+        listTypedCall({ downloadVideo() }, { downloadPlaylist() }, { downloadChannel() })
     }
 
     private fun listTypedCall(
@@ -73,49 +74,46 @@ class AddListFragment : Fragment() {
     }
 
     private fun searchVideo() = GlobalScope.launch(Dispatchers.Main) {
-        currentVideo = Video.get(et_id.text.toString())
+        currentVideo = withContext(Dispatchers.Default) { Video.get(et_id.text.toString()) }
 
         tv_result.text = currentVideo?.getTitle()
-
+        // currentVideo = null
         if (currentVideo?.getTitle() == "") return@launch
 
-        btn_download.visibility = View.VISIBLE
 
-        currentVideo?.loadDownloadLinks()
+        withContext(Dispatchers.Default) {
+            currentVideo?.loadDownloadLinks()
+            currentVideo?.loadThumbnail()
+        }
 
         btn_download.isEnabled = true
         btn_print_formats.isEnabled = true
 
-        currentVideo?.loadThumbnail()
 
         // TODO: currently not stored in db
         // val tags = currentVideo?.getTags()
     }
 
     private fun searchPlaylist() = GlobalScope.launch(Dispatchers.Main) {
-        currentPlaylist = Playlist.get(et_id.text.toString())
+        currentPlaylist = withContext(Dispatchers.Default) { Playlist.get(et_id.text.toString()) }
 
         tv_result.text = currentPlaylist?.getTitle()
 
         if (currentPlaylist?.getTitle() == "") return@launch
 
-        btn_download.visibility = View.VISIBLE
-
-        currentPlaylist?.loadVideos()
+        withContext(Dispatchers.Default) { currentPlaylist?.loadVideos() }
 
         btn_download.isEnabled = true
     }
 
     private fun searchChannel(isUsername: Boolean) = GlobalScope.launch(Dispatchers.Main) {
-        currentChannel = Channel.get(et_id.text.toString(), isUsername)
+        currentChannel = withContext(Dispatchers.Default) { Channel.get(et_id.text.toString(), isUsername) }
 
         tv_result.text = currentChannel?.getTitle()
 
         if (currentChannel?.getTitle() == "") return@launch
 
-        btn_download.visibility = View.VISIBLE
-
-        currentChannel?.loadVideos()
+        withContext(Dispatchers.Default) { currentChannel?.loadVideos() }
 
         btn_download.isEnabled = true
     }
@@ -123,7 +121,9 @@ class AddListFragment : Fragment() {
     private fun downloadVideo() = GlobalScope.launch(Dispatchers.Main) {
         val activity = activity ?: return@launch
 
-        currentVideo?.downloadDir(activity.getItags(), sdCardDir)
+        withContext(Dispatchers.Default) {
+            currentVideo?.downloadDir(activity.getItags(), sdCardDir)
+        }
 
         pb_download?.progress = pb_download?.max ?: 0
         btn_download?.isEnabled = true
@@ -132,36 +132,36 @@ class AddListFragment : Fragment() {
     private fun downloadPlaylist() = GlobalScope.launch(Dispatchers.Main) {
         val activity = activity ?: return@launch
 
-        currentPlaylist?.downloadVideos(
-            activity.getItags(),
-            object : Playlist.ProgressCallback {
-                override fun update(progress: Int, total: Int) {
-                    pb_download?.max = total
-                    pb_download?.progress = progress
-                }
-            },
-            sdCardDir
-        )
+        withContext(Dispatchers.Default) {
+            currentPlaylist?.downloadVideos(activity.getItags(), playlistProgress, sdCardDir)
+        }
 
         pb_download?.progress = pb_download?.max ?: 0
         btn_download?.isEnabled = true
     }
 
-    private fun downloadChannel(isUsername: Boolean) = GlobalScope.launch(Dispatchers.Main) {
+    private fun downloadChannel() = GlobalScope.launch(Dispatchers.Main) {
         val activity = activity ?: return@launch
 
-        currentChannel?.downloadVideos(
-            activity.getItags(),
-            object : Channel.ProgressCallback {
-                override fun update(progress: Int, total: Int) {
-                    pb_download?.max = total
-                    pb_download?.progress = progress
-                }
-            },
-            sdCardDir
-        )
+        withContext(Dispatchers.Default) {
+            currentChannel?.downloadVideos(activity.getItags(), channelProgress, sdCardDir)
+        }
 
         pb_download?.progress = pb_download?.max ?: 0
         btn_download?.isEnabled = true
+    }
+
+    private val playlistProgress = object : Playlist.ProgressCallback {
+        override fun update(progress: Int, total: Int) {
+            pb_download?.max = total
+            pb_download?.progress = progress
+        }
+    }
+
+    private val channelProgress = object : Channel.ProgressCallback {
+        override fun update(progress: Int, total: Int) {
+            pb_download?.max = total
+            pb_download?.progress = progress
+        }
     }
 }
