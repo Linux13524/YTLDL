@@ -49,7 +49,7 @@ Java_de_linux13524_ytldl_jniwrapper_Playlist_getTitle
     return env->NewStringUTF(playlist->GetTitle().c_str());
 }
 
-// loadThumbnail
+// loadVideos
 JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Playlist_loadVideos
         (JNIEnv *env, jobject thiz) {
