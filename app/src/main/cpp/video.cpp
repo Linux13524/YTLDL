@@ -12,7 +12,7 @@ JNIEXPORT jlong JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_00024Companion_getNative
         (JNIEnv *env, jobject thiz, jstring id_) {
 
-    const char *id = env->GetStringUTFChars(id_, 0);
+    const char *id = env->GetStringUTFChars(id_, nullptr);
 
     Youtube::Video *video = new Youtube::Video(Youtube::Video::Get(id));
 
@@ -24,7 +24,7 @@ JNIEXPORT jstring JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_getId
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Video *video = getHandle<Youtube::Video>(env, thiz);
+    auto *video = getHandle<Youtube::Video>(env, thiz);
 
     return env->NewStringUTF(video->GetId().c_str());
 }
@@ -34,7 +34,7 @@ JNIEXPORT jstring JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_getChannelId
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Video *video = getHandle<Youtube::Video>(env, thiz);
+    auto *video = getHandle<Youtube::Video>(env, thiz);
 
     return env->NewStringUTF(video->GetChannelId().c_str());
 }
@@ -44,7 +44,7 @@ JNIEXPORT jstring JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_getTitle
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Video *video = getHandle<Youtube::Video>(env, thiz);
+    auto *video = getHandle<Youtube::Video>(env, thiz);
 
     return env->NewStringUTF(video->GetTitle().c_str());
 }
@@ -54,7 +54,7 @@ JNIEXPORT jstring JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_getDescription
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Video *video = getHandle<Youtube::Video>(env, thiz);
+    auto *video = getHandle<Youtube::Video>(env, thiz);
 
     return env->NewStringUTF(video->GetDescription().c_str());
 }
@@ -64,7 +64,7 @@ JNIEXPORT jobject JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_getTags
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Video *video = getHandle<Youtube::Video>(env, thiz);
+    auto *video = getHandle<Youtube::Video>(env, thiz);
 
     jclass clazzArrayList = env->FindClass("java/util/ArrayList");
 
@@ -85,7 +85,7 @@ JNIEXPORT jobject JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_getQualities
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Video *video = getHandle<Youtube::Video>(env, thiz);
+    auto *video = getHandle<Youtube::Video>(env, thiz);
 
     jclass clazzArrayList = env->FindClass("java/util/ArrayList");
     jclass clazzQuality = env->FindClass(
@@ -118,7 +118,7 @@ JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_loadThumbnail
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Video *video = getHandle<Youtube::Video>(env, thiz);
+    auto *video = getHandle<Youtube::Video>(env, thiz);
 
     video->LoadThumbnail();
 }
@@ -128,7 +128,7 @@ JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_loadDownloadLinks
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Video *video = getHandle<Youtube::Video>(env, thiz);
+    auto *video = getHandle<Youtube::Video>(env, thiz);
 
     video->LoadDownloadLinks();
 }
@@ -138,7 +138,7 @@ JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_printFormats
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Video *video = getHandle<Youtube::Video>(env, thiz);
+    auto *video = getHandle<Youtube::Video>(env, thiz);
 
     video->PrintFormats();
 }
@@ -148,13 +148,13 @@ JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_downloadDir
         (JNIEnv *env, jobject thiz, jintArray itags_, jstring folder_) {
 
-    Youtube::Video *video = getHandle<Youtube::Video>(env, thiz);
-    const char *folder = env->GetStringUTFChars(folder_, 0);
+    auto *video = getHandle<Youtube::Video>(env, thiz);
+    const char *folder = env->GetStringUTFChars(folder_, nullptr);
 
     jsize size = env->GetArrayLength(itags_);
     std::vector<int> vItags(size);
 
-    jint *itags = env->GetIntArrayElements(itags_, NULL);
+    jint *itags = env->GetIntArrayElements(itags_, nullptr);
 
     for (int i = 0; i < size; i++) {
         vItags[i] = itags[i];
@@ -170,12 +170,12 @@ JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_download
         (JNIEnv *env, jobject thiz, jintArray itags_) {
 
-    Youtube::Video *video = getHandle<Youtube::Video>(env, thiz);
+    auto *video = getHandle<Youtube::Video>(env, thiz);
 
     jsize size = env->GetArrayLength(itags_);
     std::vector<int> vItags(size);
 
-    jint *itags = env->GetIntArrayElements(itags_, NULL);
+    jint *itags = env->GetIntArrayElements(itags_, nullptr);
 
     for (int i = 0; i < size; i++) {
         vItags[i] = itags[i];

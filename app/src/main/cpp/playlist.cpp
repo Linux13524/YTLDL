@@ -12,7 +12,7 @@ JNIEXPORT jlong JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Playlist_00024Companion_getNative
         (JNIEnv *env, jobject thiz, jstring id_) {
 
-    const char *id = env->GetStringUTFChars(id_, 0);
+    const char *id = env->GetStringUTFChars(id_, nullptr);
 
     Youtube::Playlist *playlist = new Youtube::Playlist(Youtube::Playlist::Get(id));
 
@@ -24,7 +24,7 @@ JNIEXPORT jstring JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Playlist_getId
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Playlist *playlist = getHandle<Youtube::Playlist>(env, thiz);
+    auto *playlist = getHandle<Youtube::Playlist>(env, thiz);
 
     return env->NewStringUTF(playlist->GetId().c_str());
 }
@@ -34,7 +34,7 @@ JNIEXPORT jstring JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Playlist_getChannelId
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Playlist *playlist = getHandle<Youtube::Playlist>(env, thiz);
+    auto *playlist = getHandle<Youtube::Playlist>(env, thiz);
 
     return env->NewStringUTF(playlist->GetChannelId().c_str());
 }
@@ -44,7 +44,7 @@ JNIEXPORT jstring JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Playlist_getTitle
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Playlist *playlist = getHandle<Youtube::Playlist>(env, thiz);
+    auto *playlist = getHandle<Youtube::Playlist>(env, thiz);
 
     return env->NewStringUTF(playlist->GetTitle().c_str());
 }
@@ -54,7 +54,7 @@ JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Playlist_loadVideos
         (JNIEnv *env, jobject thiz) {
 
-    Youtube::Playlist *playlist = getHandle<Youtube::Playlist>(env, thiz);
+    auto *playlist = getHandle<Youtube::Playlist>(env, thiz);
 
     playlist->LoadVideos()->join();
 }
@@ -64,20 +64,20 @@ JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Playlist_downloadVideos
         (JNIEnv *env, jobject thiz, jintArray itags_, jobject callbackProgress_, jstring folder_) {
 
-    Youtube::Playlist *playlist = getHandle<Youtube::Playlist>(env, thiz);
-    const char *folder = env->GetStringUTFChars(folder_, 0);
+    auto *playlist = getHandle<Youtube::Playlist>(env, thiz);
+    const char *folder = env->GetStringUTFChars(folder_, nullptr);
 
     jsize size = env->GetArrayLength(itags_);
     std::vector<int> vItags(size);
 
-    jint *itags = env->GetIntArrayElements(itags_, NULL);
+    jint *itags = env->GetIntArrayElements(itags_, nullptr);
 
     for (int i = 0; i < size; i++) {
         vItags[i] = itags[i];
     }
 
-    jclass lClass = env->FindClass("de/linux13524/ytldl/jniwrapper/Playlist$ProgressCallback");
-    jclass gClass = reinterpret_cast<jclass>(env->NewGlobalRef(lClass));
+    auto lClass = env->FindClass("de/linux13524/ytldl/jniwrapper/Playlist$ProgressCallback");
+    auto gClass = reinterpret_cast<jclass>(env->NewGlobalRef(lClass));
 
     jobject gCallbackProgress = env->NewGlobalRef(callbackProgress_);
 
