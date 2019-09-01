@@ -24,8 +24,6 @@ class AddListFragment : Fragment() {
     private var currentPlaylist: Playlist? = null
     private var currentChannel: Channel? = null
 
-    private val sdCardDir = "${Environment.getExternalStorageDirectory()}/YT-DL"
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

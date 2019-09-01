@@ -44,7 +44,7 @@ class MainActivity : FragmentActivity() {
     private fun updateLog(newMessage: String) {
         runOnUiThread {
             tv_log.text = "${tv_log.text}\n$newMessage"
-            lyt_scroll.post({ lyt_scroll.fullScroll(ScrollView.FOCUS_DOWN) })
+            lyt_scroll.post { lyt_scroll.fullScroll(ScrollView.FOCUS_DOWN) }
         }
     }
 
