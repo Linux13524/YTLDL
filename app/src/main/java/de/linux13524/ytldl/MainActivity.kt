@@ -8,10 +8,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import de.linux13524.ytldl.jniwrapper.Filesystem
 import de.linux13524.ytldl.utils.LogReader
 import de.linux13524.ytldl.utils.PermissionManager
+import de.linux13524.ytldl.utils.PreferencesManager.syncPreferencesWithGlobalDownloadOptions
 import kotlinx.android.synthetic.main.activity_main.*
+import de.linux13524.ytldl.jniwrapper.download.GlobalOptions as GlobalDownloadOptions
+import de.linux13524.ytldl.jniwrapper.filesystem.Settings as FilesystemSettings
 
 
 @Suppress("UNUSED_PARAMETER")

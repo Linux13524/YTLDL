@@ -1,7 +1,6 @@
 package de.linux13524.ytldl.fragments
 
 import android.os.Bundle
-import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import de.linux13524.ytldl.R
 import de.linux13524.ytldl.jniwrapper.Channel
 import de.linux13524.ytldl.jniwrapper.Playlist
 import de.linux13524.ytldl.jniwrapper.Video
-import de.linux13524.ytldl.utils.PreferencesManager.getItags
 import kotlinx.android.synthetic.main.fragment_add_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -120,7 +118,7 @@ class AddListFragment : Fragment() {
         val activity = activity ?: return@launch
 
         withContext(Dispatchers.Default) {
-            currentVideo?.downloadDir(activity.getItags(), sdCardDir)
+            currentVideo?.download()
         }
 
         pb_download?.progress = pb_download?.max ?: 0
@@ -131,7 +129,7 @@ class AddListFragment : Fragment() {
         val activity = activity ?: return@launch
 
         withContext(Dispatchers.Default) {
-            currentPlaylist?.downloadVideos(activity.getItags(), playlistProgress, sdCardDir)
+            currentPlaylist?.downloadVideos(playlistProgress)
         }
 
         pb_download?.progress = pb_download?.max ?: 0
@@ -142,7 +140,7 @@ class AddListFragment : Fragment() {
         val activity = activity ?: return@launch
 
         withContext(Dispatchers.Default) {
-            currentChannel?.downloadVideos(activity.getItags(), channelProgress, sdCardDir)
+            currentChannel?.downloadVideos(channelProgress)
         }
 
         pb_download?.progress = pb_download?.max ?: 0

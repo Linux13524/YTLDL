@@ -1,5 +1,6 @@
 #include <jni.h>
 #include "handle.h"
+#include "YoutubeListDownloader/download/options.h"
 #include "YoutubeListDownloader/youtube/video.h"
 
 #ifndef PLATFORM_ANDROID_VIDEO_CPP
@@ -145,45 +146,12 @@ Java_de_linux13524_ytldl_jniwrapper_Video_printFormats
 
 // download
 JNIEXPORT void JNICALL
-Java_de_linux13524_ytldl_jniwrapper_Video_downloadDir
-        (JNIEnv *env, jobject thiz, jintArray itags_, jstring folder_) {
-
-    auto *video = getHandle<Youtube::Video>(env, thiz);
-    const char *folder = env->GetStringUTFChars(folder_, nullptr);
-
-    jsize size = env->GetArrayLength(itags_);
-    std::vector<int> vItags(size);
-
-    jint *itags = env->GetIntArrayElements(itags_, nullptr);
-
-    for (int i = 0; i < size; i++) {
-        vItags[i] = itags[i];
-    }
-
-    Youtube::Video::Download(*video, vItags, folder);
-
-    env->ReleaseIntArrayElements(itags_, itags, 0);
-}
-
-// download
-JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Video_download
-        (JNIEnv *env, jobject thiz, jintArray itags_) {
+        (JNIEnv *env, jobject thiz) {
 
     auto *video = getHandle<Youtube::Video>(env, thiz);
 
-    jsize size = env->GetArrayLength(itags_);
-    std::vector<int> vItags(size);
-
-    jint *itags = env->GetIntArrayElements(itags_, nullptr);
-
-    for (int i = 0; i < size; i++) {
-        vItags[i] = itags[i];
-    }
-
-    Youtube::Video::Download(*video, vItags);
-
-    env->ReleaseIntArrayElements(itags_, itags, 0);
+    Youtube::Video::Download(*video);
 }
 
 }

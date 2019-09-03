@@ -26,6 +26,5 @@ class Video(private val nativeHandle: Long) {
     external fun loadThumbnail()
     external fun loadDownloadLinks()
     external fun printFormats()
-    external fun downloadDir(itags: IntArray, folder: String)
-    external fun download(itags: IntArray)
+    external fun download()
 }

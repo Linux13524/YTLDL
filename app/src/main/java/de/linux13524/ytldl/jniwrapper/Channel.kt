@@ -20,5 +20,5 @@ class Channel(private val nativeHandle: Long) {
     external fun getTitle(): String
 
     external fun loadVideos()
-    external fun downloadVideos(itags: IntArray, callbackProgress: ProgressCallback?, folder: String?)
+    external fun downloadVideos(callbackProgress: ProgressCallback?)
 }

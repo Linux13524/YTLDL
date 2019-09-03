@@ -62,19 +62,9 @@ Java_de_linux13524_ytldl_jniwrapper_Playlist_loadVideos
 // downloadVideos
 JNIEXPORT void JNICALL
 Java_de_linux13524_ytldl_jniwrapper_Playlist_downloadVideos
-        (JNIEnv *env, jobject thiz, jintArray itags_, jobject callbackProgress_, jstring folder_) {
+        (JNIEnv *env, jobject thiz, jobject callbackProgress_) {
 
     auto *playlist = getHandle<Youtube::Playlist>(env, thiz);
-    const char *folder = env->GetStringUTFChars(folder_, nullptr);
-
-    jsize size = env->GetArrayLength(itags_);
-    std::vector<int> vItags(size);
-
-    jint *itags = env->GetIntArrayElements(itags_, nullptr);
-
-    for (int i = 0; i < size; i++) {
-        vItags[i] = itags[i];
-    }
 
     auto lClass = env->FindClass("de/linux13524/ytldl/jniwrapper/Playlist$ProgressCallback");
     auto gClass = reinterpret_cast<jclass>(env->NewGlobalRef(lClass));
@@ -102,9 +92,7 @@ Java_de_linux13524_ytldl_jniwrapper_Playlist_downloadVideos
         if (needsDetach) jvm->DetachCurrentThread();
     };
 
-    playlist->DownloadVideos(vItags, f, folder);
-
-    env->ReleaseIntArrayElements(itags_, itags, 0);
+    playlist->DownloadVideos(f);
 }
 
 }

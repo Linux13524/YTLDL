@@ -30,7 +30,8 @@ conan_cmake_run(CONANFILE conanfile.txt
 
 ### native.so
 add_library(native SHARED
-        src/main/cpp/filesystem.cpp
+        src/main/cpp/filesystem/settings.cpp
+        src/main/cpp/download/global_options.cpp
         src/main/cpp/handle.h
         src/main/cpp/channel.cpp
         src/main/cpp/playlist.cpp
