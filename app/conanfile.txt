@@ -1,5 +1,5 @@
 [requires]
-youtube_list_downloader/1.0.1@linux13524/testing
+youtube_list_downloader/1.0.2@linux13524/testing
 
 [generators]
 cmake
