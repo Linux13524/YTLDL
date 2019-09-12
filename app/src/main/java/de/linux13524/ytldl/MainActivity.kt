@@ -25,18 +25,35 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initPermissions()
+        initNavigation()
+        initDownloadOptions()
+        initFilesystem()
+
+        LogReader(::updateLog).run()
+    }
+
+    private fun initNavigation(){
         val navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration(navController.graph, drawer_layout)
 
         toolbar.setupWithNavController(navController, appBarConfiguration)
         nav_view.setupWithNavController(navController)
+    }
 
-        Filesystem.Settings.setDbPath("/data/data/de.linux13524.ytldl/databases/")
-        Filesystem.Settings.setVideoPath(sdCardDir)
+    private fun initDownloadOptions(){
+        syncPreferencesWithGlobalDownloadOptions()
+        // TODO: Add to settings fragment/preferences
+        GlobalDownloadOptions.setSaveVideoName(true)
+        GlobalDownloadOptions.setPath(sdCardDir)
+    }
 
+    private fun initFilesystem(){
+        FilesystemSettings.setDbPath("/data/data/de.linux13524.ytldl/databases/")
+    }
+
+    private fun initPermissions(){
         PermissionManager.checkPermissions(this)
-
-        LogReader(::updateLog).run()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
